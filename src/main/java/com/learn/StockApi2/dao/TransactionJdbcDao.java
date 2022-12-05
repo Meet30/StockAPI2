@@ -9,55 +9,54 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TransactionJdbcDao implements DAO <Transaction> {
+public class TransactionJdbcDao implements DAO <Transaction,Integer> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     RowMapper <Transaction> rowMapper = (rs, rowNum) -> {
-        String id = rs.getString("id");
-        String symbol = rs.getString("symbol");
-        int type = rs.getInt("type");
+        int transaction_id = rs.getInt("id");
         int quantity = rs.getInt("quantity");
-        long price = rs.getLong("price");
-        Transaction transaction = new Transaction(id,symbol,type,quantity,price);
+        int stock_id = rs.getInt("stock");
+        int user_id = rs.getInt("user");
+        Transaction transaction = new Transaction(transaction_id,quantity,stock_id,user_id);
         return transaction;
     };
 
-    public TransactionJdbcDao(JdbcTemplate jdbcTemplate) {
+    public TransactionJdbcDao(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
         String sql1 = "DROP TABLE IF EXISTS transactions";
-        String sql2 = "CREATE TABLE IF NOT EXISTS transactions(id varchar(20), symbol varchar(20), type INT, quantity INT, price BIGINT, PRIMARY KEY(id))";
+        String sql2 = "CREATE TABLE IF NOT EXISTS transactions(transaction_id INT, quantity INT, stock_id INT, user_id INT)";
         jdbcTemplate.execute(sql1);
         jdbcTemplate.execute(sql2);
     }
 
     @Override
     public List<Transaction> getAll() {
-        String sql = "SELECT id, symbol, type, quantity, price from transactions";
+        String sql = "SELECT * from transactions";
         return jdbcTemplate.query(sql,rowMapper);
     }
 
     @Override
     public void save(Transaction t) {
-        String sql = "INSERT INTO transactions(id, symbol, type, quantity, price) values (?,?,?,?,?)";
-        int insert = jdbcTemplate.update(sql,t.getId(),t.getSymbol(),t.getType(),t.getQuantity(),t.getPrice());
+        String sql = "INSERT INTO transactions(transaction_id, quantity, stock_id, user_id) values (?,?,?,?)";
+        int insert = jdbcTemplate.update(sql,t.getTransaction_id(),t.getQuantity(),t.getStock_id(),t.getUser_id());
     }
 
     @Override
-    public Transaction get(String id) {
+    public Transaction get(Integer id) {
         String sql = "SELECT * FROM transactions WHERE id = ?";
         return jdbcTemplate.queryForObject(sql,rowMapper,id);
     }
 
     @Override
-    public void update(Transaction t, String id) {
-        String sql = "UPDATE transactions SET id = ?, symbol = ?, type = ?, quantity = ?, price = ? WHERE id = ?;";
-        int rowAffected = jdbcTemplate.update(sql,t.getId(),t.getSymbol(),t.getType(),t.getQuantity(),t.getPrice(), t.getId());
+    public void update(Transaction t, Integer id) {
+        String sql = "UPDATE transactions SET id = ?,quantity = ?, stock_id = ?, user_id = ? WHERE id = ?";
+        int rowAffected = jdbcTemplate.update(sql,t.getTransaction_id(),t.getQuantity(),t.getStock_id(),t.getUser_id(),id);
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         String sql = "DELETE FROM transactions WHERE id = ?";
         jdbcTemplate.update(sql,id);
     }

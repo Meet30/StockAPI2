@@ -4,14 +4,14 @@ import com.learn.StockApi2.Transaction.Transaction;
 
 import java.util.List;
 
-public interface DAO <T> {
+public interface DAO <T,Key> {
 
-    Transaction get(String id);
+    T get(Key id);
     List<T> getAll();
 
     void save(T t);
 
-    void update(T t, String id);
+    void update(T t, Key id);
 
-    void delete(String id);
+    void delete(Key id);
 }

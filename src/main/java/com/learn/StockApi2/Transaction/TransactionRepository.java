@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface TransactionRepository{
 
-    List<Transaction> getAllTransanctions();
+    List<Transaction> getAllTransactions();
 
-    Transaction getTransaction(String id);
+    Transaction getTransaction(int id);
 
     void addTransaction(Transaction transaction);
 
-    void updateTransaction(Transaction transaction, String id);
+    void updateTransaction(Transaction transaction, int id);
 
-    void deleteTransaction(String id);
+    void deleteTransaction(int id);
 
 
 }

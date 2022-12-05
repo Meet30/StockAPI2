@@ -14,10 +14,10 @@ public class TransactionController {
     // GET REQUEST
     @RequestMapping(method = RequestMethod.GET, value = "/transactions")
     public List<Transaction> getAllTransaction(){
-        return transactionService.getAllTransaction();
+        return transactionService.getAllTransactions();
     }
     @RequestMapping(method = RequestMethod.POST, value = "/transactions/{id}")
-    public Transaction getTransaction(@PathVariable String id){
+    public Transaction getTransaction(@PathVariable int id){
         return transactionService.getTransaction(id);
     }
 
@@ -29,13 +29,13 @@ public class TransactionController {
 
     // DELETE REQUEST
     @RequestMapping(method = RequestMethod.DELETE, value = "/transactions/{id}")
-    public void deleteTransaction(@PathVariable String id){
+    public void deleteTransaction(@PathVariable int id){
         transactionService.deleteTransaction(id);
     }
 
     // PUT REQUEST
     @RequestMapping(method = RequestMethod.PUT, value = "/transactions/{id}")
-    public  void updateTransaction(@RequestBody Transaction transaction, @PathVariable String id){
+    public  void updateTransaction(@RequestBody Transaction transaction, @PathVariable int id){
         transactionService.updateTransaction(transaction,id);
     }
 }

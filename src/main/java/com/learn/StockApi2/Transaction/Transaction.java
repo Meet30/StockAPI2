@@ -1,46 +1,26 @@
 package com.learn.StockApi2.Transaction;
 
-
 public class Transaction {
-    private String id;
-    private String symbol;
-    private int type;
-
+    private int transaction_id;
     private int quantity;
-    private long price;
+    private int stock_id;
+    private int user_id;
 
     public Transaction(){}
 
-    public Transaction(String id, String symbol, int type, int quantity, long price) {
-        this.id = id;
-        this.symbol = symbol;
-        this.type = type;
+    public Transaction(int transaction_id, int quantity, int stock_id, int user_id) {
+        this.transaction_id = transaction_id;
         this.quantity = quantity;
-        this.price = price;
+        this.stock_id = stock_id;
+        this.user_id = user_id;
     }
 
-    public String getId() {
-        return id;
+    public int getTransaction_id() {
+        return transaction_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    public void setTransaction_id(int transaction_id) {
+        this.transaction_id = transaction_id;
     }
 
     public int getQuantity() {
@@ -51,11 +31,19 @@ public class Transaction {
         this.quantity = quantity;
     }
 
-    public long getPrice() {
-        return price;
+    public int getStock_id() {
+        return stock_id;
     }
 
-    public void setPrice(long price) {
-        this.price = price;
+    public void setStock_id(int stock_id) {
+        this.stock_id = stock_id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }
