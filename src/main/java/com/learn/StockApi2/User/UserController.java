@@ -1,21 +1,27 @@
 package com.learn.StockApi2.User;
 
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@RestController
 public class UserController {
 
-
+    @Autowired
     private UserService userService;
 
 
 //    // INIT
 //    @RequestMapping(method = RequestMethod.GET, value = "/user/init")
 //    public void init(){
-//        Set <Stock> stockSet = new HashSet<>();
-//        Set < Transaction> transactionSet = new HashSet<>();
+//        Set <Integer> stockSet = new HashSet<>();
+//        stockSet.add(10);
+//        stockSet.add(20);
+//        Set <Integer> transactionSet = new HashSet<>();
+//        transactionSet.add(3);
+//        transactionSet.add(4);
 //        User temp = new User(100, 999, stockSet, transactionSet);
 //        userService.addUser(temp);
 //    }
@@ -23,7 +29,7 @@ public class UserController {
     // GET
     @RequestMapping(method = RequestMethod.GET, value = "/user/")
     public List<User> getAllUser(){
-        return userService.getAllUser();
+        return userService.getAllUsers();
     }
     @RequestMapping(method = RequestMethod.GET, value = "/user/{user_id}")
     public User getUser(@PathVariable int user_id){

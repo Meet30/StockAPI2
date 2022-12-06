@@ -4,17 +4,18 @@ package com.learn.StockApi2.Transaction;
 import com.learn.StockApi2.dao.DAO;
 import com.learn.StockApi2.dao.TransactionJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class TransactionService implements TransactionRepository{
 
     @Autowired
-    private TransactionJdbcDao transactionDAO;
+    private DAO <Transaction,Integer> transactionDAO;
 
     @Override
     public List<Transaction> getAllTransactions() {

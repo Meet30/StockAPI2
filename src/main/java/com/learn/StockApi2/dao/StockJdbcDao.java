@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 public class StockJdbcDao implements DAO <Stock,Integer> {
@@ -41,12 +41,12 @@ public class StockJdbcDao implements DAO <Stock,Integer> {
     @Override
     public void save(Stock s) {
         String sql = "INSERT INTO stocks(stock_id, symbol, price) values (?,?,?)";
-        int insert = jdbcTemplate.update(sql,s.getPrice(),s.getSymbol(),s.getPrice());
+        int insert = jdbcTemplate.update(sql,s.getStock_id(),s.getSymbol(),s.getPrice());
     }
 
     @Override
     public Stock get(Integer id) {
-        String sql = "SELECT * FROM stocks WHERE id = ?";
+        String sql = "SELECT * FROM stocks WHERE stock_id = ?";
         return jdbcTemplate.queryForObject(sql,rowMapper,id);
     }
 
@@ -58,7 +58,7 @@ public class StockJdbcDao implements DAO <Stock,Integer> {
 
     @Override
     public void delete(Integer id){
-        String sql = "DELETE FROM stocks WHERE id = ?";
+        String sql = "DELETE FROM stocks WHERE stock_id = ?";
         jdbcTemplate.update(sql,id);
     }
 }

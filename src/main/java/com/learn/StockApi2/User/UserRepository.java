@@ -1,6 +1,19 @@
-package com.learn.StockAPI.User;
+package com.learn.StockApi2.User;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
 
-public interface UserRepository extends  <User,Integer> {
+public interface UserRepository{
+
+
+    List<User> getAllUsers();
+
+    User getUser(int id);
+
+    void addUser(User user);
+
+    void updateUser(User user, int id);
+
+    void deleteUser(int id);
+
+
 }

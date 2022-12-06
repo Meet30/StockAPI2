@@ -1,9 +1,6 @@
 package com.learn.StockApi2.User;
 
-import com.learn.StockApi2.Stock.Stock;
-import com.learn.StockApi2.Transaction.Transaction;
 
-import java.util.List;
 import java.util.Set;
 
 public class User {

@@ -1,12 +1,12 @@
 package com.learn.StockApi2.dao;
-import com.learn.StockApi2.Transaction.Transaction;
 
+import com.learn.StockApi2.Transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 public class TransactionJdbcDao implements DAO <Transaction,Integer> {
@@ -15,10 +15,10 @@ public class TransactionJdbcDao implements DAO <Transaction,Integer> {
     private JdbcTemplate jdbcTemplate;
 
     RowMapper <Transaction> rowMapper = (rs, rowNum) -> {
-        int transaction_id = rs.getInt("id");
+        int transaction_id = rs.getInt("transaction_id");
         int quantity = rs.getInt("quantity");
-        int stock_id = rs.getInt("stock");
-        int user_id = rs.getInt("user");
+        int stock_id = rs.getInt("stock_id");
+        int user_id = rs.getInt("user_id");
         Transaction transaction = new Transaction(transaction_id,quantity,stock_id,user_id);
         return transaction;
     };
@@ -32,7 +32,7 @@ public class TransactionJdbcDao implements DAO <Transaction,Integer> {
     }
 
     @Override
-    public List<Transaction> getAll() {
+    public List <Transaction> getAll() {
         String sql = "SELECT * from transactions";
         return jdbcTemplate.query(sql,rowMapper);
     }
@@ -45,19 +45,19 @@ public class TransactionJdbcDao implements DAO <Transaction,Integer> {
 
     @Override
     public Transaction get(Integer id) {
-        String sql = "SELECT * FROM transactions WHERE id = ?";
+        String sql = "SELECT * FROM transactions WHERE transaction_id = ?";
         return jdbcTemplate.queryForObject(sql,rowMapper,id);
     }
 
     @Override
     public void update(Transaction t, Integer id) {
-        String sql = "UPDATE transactions SET id = ?,quantity = ?, stock_id = ?, user_id = ? WHERE id = ?";
+        String sql = "UPDATE transactions SET transaction_id = ?,quantity = ?, stock_id = ?, user_id = ? WHERE transaction_id = ?";
         int rowAffected = jdbcTemplate.update(sql,t.getTransaction_id(),t.getQuantity(),t.getStock_id(),t.getUser_id(),id);
     }
 
     @Override
     public void delete(Integer id) {
-        String sql = "DELETE FROM transactions WHERE id = ?";
+        String sql = "DELETE FROM transactions WHERE transaction_id = ?";
         jdbcTemplate.update(sql,id);
     }
 }
