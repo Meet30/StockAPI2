@@ -25,10 +25,6 @@ public class TransactionJdbcDao implements DAO <Transaction,Integer> {
 
     public TransactionJdbcDao(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
-        String sql1 = "DROP TABLE IF EXISTS transactions";
-        String sql2 = "CREATE TABLE IF NOT EXISTS transactions(transaction_id INT, quantity INT, stock_id INT, user_id INT)";
-        jdbcTemplate.execute(sql1);
-        jdbcTemplate.execute(sql2);
     }
 
     @Override

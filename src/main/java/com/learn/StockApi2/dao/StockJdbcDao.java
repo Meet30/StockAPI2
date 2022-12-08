@@ -26,10 +26,6 @@ public class StockJdbcDao implements DAO <Stock,Integer> {
 
     public StockJdbcDao(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
-        String sql1 = "DROP TABLE IF EXISTS stocks";
-        String sql2 = "CREATE TABLE IF NOT EXISTS stocks(stock_id INT, symbol VARCHAR(20), price BIGINT)";
-        jdbcTemplate.execute(sql1);
-        jdbcTemplate.execute(sql2);
     }
 
     @Override

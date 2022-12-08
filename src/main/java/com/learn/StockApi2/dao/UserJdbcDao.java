@@ -1,15 +1,12 @@
 package com.learn.StockApi2.dao;
 
 
-import com.learn.StockApi2.Stock.Stock;
 import com.learn.StockApi2.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.Array;
 import java.util.*;
 
 @Component
@@ -46,10 +43,18 @@ public class UserJdbcDao implements DAO <User,Integer> {
 
     public UserJdbcDao(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
-        String sql1 = "DROP TABLE IF EXISTS users";
-        String sql2 = "CREATE TABLE IF NOT EXISTS users(user_id INT, balance BIGINT,portfolio VARCHAR(1000), transactions VARCHAR(1000))";
-        jdbcTemplate.execute(sql1);
-        jdbcTemplate.execute(sql2);
+        String sql[] = new String[6];
+        sql[0] = "DROP TABLE IF EXISTS transactions";
+        sql[1] = "DROP TABLE IF EXISTS stocks";
+        sql[2] = "DROP TABLE IF EXISTS users";
+
+        sql[3] = "CREATE TABLE IF NOT EXISTS users(user_id INT NOT NULL AUTO_INCREMENT, balance BIGINT,portfolio VARCHAR(1000), transactions VARCHAR(1000), PRIMARY KEY(user_id))";
+        sql[4] = "CREATE TABLE IF NOT EXISTS stocks (stock_id INT NOT NULL AUTO_INCREMENT, symbol VARCHAR(20), price BIGINT, PRIMARY KEY(stock_id))";
+        sql[5] = "CREATE TABLE IF NOT EXISTS transactions (transaction_id INT NOT NULL AUTO_INCREMENT, quantity INT, stock_id INT, user_id INT, PRIMARY KEY(transaction_id), FOREIGN KEY (stock_id) REFERENCES stocks(stock_id), FOREIGN KEY (user_id) REFERENCES users(user_id))";
+
+        for(int i = 0; i < 6; i++){
+            jdbcTemplate.execute(sql[i]);
+        }
     }
 
     @Override
