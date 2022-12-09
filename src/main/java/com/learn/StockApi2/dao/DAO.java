@@ -13,5 +13,6 @@ public interface DAO <T,Key> {
 
     void update(T t, Key id);
 
+    // changed
     void delete(Key id);
 }

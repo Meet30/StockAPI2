@@ -13,12 +13,12 @@ public class StockController{
 
     // GET ALL
     @RequestMapping(method = RequestMethod.GET, value = "/stock/")
-    public List<Stock> getAllTransaction(){
+    public List<Stock> getAllStocks(){
         return stockService.getAllStocks();
     }
     // GET BY ID
     @RequestMapping(method = RequestMethod.GET, value = "/stock/{stock_id}")
-    public Stock getAllStocks(@PathVariable int stock_id){
+    public Stock getStock(@PathVariable int stock_id){
         return stockService.getStock(stock_id);
     }
 

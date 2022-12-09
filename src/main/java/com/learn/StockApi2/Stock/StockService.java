@@ -1,6 +1,7 @@
 package com.learn.StockApi2.Stock;
 
 
+import com.learn.StockApi2.Exception.GetByIdAccessException;
 import com.learn.StockApi2.dao.DAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,34 +11,33 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 @Transactional
-public class StockService implements StockRepository{
+public class StockService{
 
     @Autowired
     private DAO<Stock,Integer> stockDao;
 
-    @Override
+
     public List<Stock> getAllStocks() {
         List <Stock> stockList = new ArrayList<>();
         stockDao.getAll().forEach(stockList::add);
         return stockList;
     }
 
-    @Override
-    public Stock getStock(int id) {
+
+    public Stock getStock(int id) throws GetByIdAccessException {
         return stockDao.get(id);
     }
 
-    @Override
+
     public void addStock(Stock stock) {
         stockDao.save(stock);
     }
 
-    @Override
+
     public void updateStock(Stock stock, int id) {
         stockDao.update(stock,id);
     }
 
-    @Override
     public void deleteStock(int id) {
         stockDao.delete(id);
     }

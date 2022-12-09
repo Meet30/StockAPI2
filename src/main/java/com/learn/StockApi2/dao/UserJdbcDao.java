@@ -1,8 +1,10 @@
 package com.learn.StockApi2.dao;
 
 
+import com.learn.StockApi2.Exception.GetByIdAccessException;
 import com.learn.StockApi2.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -41,6 +43,8 @@ public class UserJdbcDao implements DAO <User,Integer> {
         return user;
     };
 
+
+    // Creating all tables here beacause user is not dependent on stocks & transaction
     public UserJdbcDao(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
         String sql[] = new String[6];
@@ -64,15 +68,20 @@ public class UserJdbcDao implements DAO <User,Integer> {
     }
 
     @Override
-    public void save(User u) {
-        String sql = "INSERT INTO users(user_id, balance, portfolio, transactions) values (?,?,?,?)";
-        int insert = jdbcTemplate.update(sql,u.getUser_id(),u.getBalance(),convertToString(u.getPortfolio()),convertToString(u.getTrasactions()));
+    public User get(Integer id) throws GetByIdAccessException {
+        try {
+            String sql = "SELECT * FROM  WHERE user_id = ?";
+            return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        }
+        catch (DataAccessException e){
+            throw new GetByIdAccessException("User with ID = " + id + " not found");
+        }
     }
 
     @Override
-    public User get(Integer id) {
-        String sql = "SELECT * FROM  WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(sql,rowMapper,id);
+    public void save(User u) {
+        String sql = "INSERT INTO users(user_id, balance, portfolio, transactions) values (?,?,?,?)";
+        int insert = jdbcTemplate.update(sql,u.getUser_id(),u.getBalance(),convertToString(u.getPortfolio()),convertToString(u.getTrasactions()));
     }
 
     @Override

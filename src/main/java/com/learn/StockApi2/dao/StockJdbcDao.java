@@ -1,8 +1,11 @@
 package com.learn.StockApi2.dao;
 
 
+import com.learn.StockApi2.Exception.EntityAlreadyExistException;
+import com.learn.StockApi2.Exception.GetByIdAccessException;
 import com.learn.StockApi2.Stock.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -35,15 +38,28 @@ public class StockJdbcDao implements DAO <Stock,Integer> {
     }
 
     @Override
-    public void save(Stock s) {
-        String sql = "INSERT INTO stocks(stock_id, symbol, price) values (?,?,?)";
-        int insert = jdbcTemplate.update(sql,s.getStock_id(),s.getSymbol(),s.getPrice());
+    public Stock get(Integer id) throws GetByIdAccessException{
+        String sql = "SELECT * FROM stocks WHERE stock_id = ?";
+        try{
+            Stock stock = jdbcTemplate.queryForObject(sql,rowMapper,id);
+            return stock;
+        }
+        catch(DataAccessException e){
+            throw new GetByIdAccessException("Stock with ID = " + id + " not found");
+        }
     }
 
     @Override
-    public Stock get(Integer id) {
-        String sql = "SELECT * FROM stocks WHERE stock_id = ?";
-        return jdbcTemplate.queryForObject(sql,rowMapper,id);
+    public void save(Stock s) {
+        try{
+            String sql = "SELECT * FROM stocks WHERE symbol = ?";
+            Stock stock = jdbcTemplate.queryForObject(sql,rowMapper,s.getSymbol());
+            throw new EntityAlreadyExistException("Stock with symbol " + s.getSymbol() + " already exist");
+        }
+        catch (DataAccessException e){
+            String sql = "INSERT INTO stocks(stock_id, symbol, price) values (?,?,?)";
+            int insert = jdbcTemplate.update(sql, s.getStock_id(), s.getSymbol(), s.getPrice());
+        }
     }
 
     @Override
